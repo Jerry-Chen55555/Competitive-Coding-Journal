@@ -1,6 +1,5 @@
 package Day13;
 import java.io.*;
-import java.util.*;
 
 
 public class solution {
@@ -24,7 +23,7 @@ public class solution {
             int goalX = Integer.parseInt(goalTokens[1].split(", ")[0]);
             int goalY = Integer.parseInt(goalTokens[2]);
 
-            
+            System.out.println(a + b + c + d + goalX + goalY);
 
             br.readLine();
         }
@@ -32,5 +31,6 @@ public class solution {
 
 
         System.out.println(res);
+        br.close();
     }
 }
