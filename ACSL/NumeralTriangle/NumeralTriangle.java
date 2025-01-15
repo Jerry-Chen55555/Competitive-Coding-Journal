@@ -1,3 +1,4 @@
+package NumeralTriangle;
 import java.io.*;
 import java.util.*;
 

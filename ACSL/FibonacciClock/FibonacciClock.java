@@ -1,14 +1,13 @@
+package FibonacciClock;
 import java.io.*;
-import java.util.Arrays;
 
 public class FibonacciClock {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new FileReader("input.txt"));
+        int[] fibonaccis = { 1, 1, 2, 3, 5 };
 
         for (int i = 0; i < 5; i++) {
-            String input = br.readLine();
-            char key = input.charAt(0);
-            System.out.println(Arrays.toString(tokenStrings));
+            String[] tokenStrings = br.readLine().split(" ");
             int hours = 0;
             int minutes = 0;
             for (int j = 0; j < tokenStrings.length; j++) {
