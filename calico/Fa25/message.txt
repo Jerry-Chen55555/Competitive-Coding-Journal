@@ -1,0 +1,146 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+    static class Piece {
+        String type;
+        int x, y;
+
+        Piece(String type, int x, int y) {
+            this.type = type;
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    static boolean isBlocked(Piece a, Piece b, List<Piece> P) {
+        if (a.y == b.y) {
+            if (a.x > b.x) {
+                Piece swap = a;
+                a = b;
+                b = swap;
+            }
+
+            for (Piece p : P) {
+                if (p.y == a.y && p.x > a.x && p.x < b.x) {
+                    return true;
+                }
+            }
+        }
+
+        if (a.x == b.x) {
+            if (a.y > b.y) {
+                Piece swap = a;
+                a = b;
+                b = swap;
+            }
+
+            for (Piece p : P) {
+                if (p.x == a.x && p.y > a.y && p.y < b.y) {
+                    return true;
+                }
+            }
+        }
+
+        if (Math.abs(a.x - a.y) == Math.abs(b.x - b.y)) {
+            if (a.x > b.x) {
+                Piece swap = a;
+                a = b;
+                b = swap;
+            }
+
+            int directionX;
+            int directionY;
+
+            if (a.x < b.x) {
+                directionX = 1;
+            } else {
+                directionX = -1;
+            }
+
+            if (a.y < b.y) {
+                directionY = 1;
+            } else {
+                directionY = -1;
+            }
+
+            int x = a.x + directionX;
+            int y = a.y + directionY;
+
+            while (x != b.x && y != b.y) {
+                for (Piece p : P) {
+                    if (p.x == x && p.y == y) {
+                        return true;
+                    }
+                }
+
+                x += directionX;
+                y += directionY;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return the score of S amplified K times
+     * 
+     * S: string to amplify
+     * K: integer for number of times to amplify
+     */
+    static int solve(int N, int M, int K, List<Piece> P) {
+        int attacks = 0;
+
+        for (int i = 0; i < P.size(); i++) {
+            Piece A = P.get(i);
+            String type = A.type;
+            for (int j = 1; j < P.size(); j++) {
+                Piece B = P.get(j);
+
+                if (type.equals("R")) {
+                    if ((A.x == B.x || A.y == B.y) && !isBlocked(A, B, P)) {
+                        attacks++;
+                    }
+                }
+
+                else if (type.equals("Q")) {
+                    if ((A.x == B.x || A.y == B.y || Math.abs(A.x - A.y) == Math.abs(B.x - B.y))
+                            && !isBlocked(A, B, P)) {
+                        attacks++;
+                    }
+                }
+
+                else if (type.equals("B")) {
+                    if (Math.abs(A.x - A.y) == Math.abs(B.x - B.y) && !isBlocked(A, B, P)) {
+                        attacks++;
+                    }
+                }
+            }
+        }
+
+        return attacks;
+    }
+
+    static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+    static PrintWriter out = new PrintWriter(System.out);
+
+    public static void main(String[] args) throws IOException {
+        int T = Integer.parseInt(in.readLine());
+        for (int i = 0; i < T; i++) {
+            String[] temp = in.readLine().split(" ");
+            int N = Integer.parseInt(temp[0]);
+            int M = Integer.parseInt(temp[1]);
+            int K = Integer.parseInt(in.readLine());
+            List<Piece> P = new ArrayList<>();
+            for (int j = 0; j < K; j++) {
+                temp = in.readLine().split(" ");
+                String piece = temp[0];
+                int x = Integer.parseInt(temp[1]);
+                int y = Integer.parseInt(temp[2]);
+                P.add(new Piece(piece, x, y));
+            }
+            out.println(solve(N, M, K, P));
+        }
+        out.flush();
+    }
+}
